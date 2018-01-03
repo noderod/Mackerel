@@ -1,4 +1,4 @@
-## A General PowerPoint Tool
+## An Automated Writing Tool
 
 Mackerel provides an automated, easy to use alternative for company or school
 writing tasks. Simply provide the topic and/or files and we will do the rest.
