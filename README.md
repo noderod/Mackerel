@@ -11,9 +11,9 @@ Current development is geared towards powerpoint presentations.
 
 
 ### Necessary Dependencies
-[**Sumy**](https://github.com/miso-belica/sumy): Text summarizer
-[**Wikipedia**](https://pypi.python.org/pypi/wikipedia/): Access to the wikipedia API
-[**python-pptx**](http://python-pptx.readthedocs.io/en/latest/user/install.html): Creates powerpoints using python.
+[**Sumy**](https://github.com/miso-belica/sumy): Text summarizer  
+[**Wikipedia**](https://pypi.python.org/pypi/wikipedia/): Access to the wikipedia API  
+[**python-pptx**](http://python-pptx.readthedocs.io/en/latest/user/install.html): Creates powerpoints using python.  
 
 
 ### Updates and versions
