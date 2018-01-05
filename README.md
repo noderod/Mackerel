@@ -32,7 +32,7 @@ python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
   If the user wishes to provide a subtitle, separate it using a "/+/" without spaces.
 
   i.e. :  
-    python jurel.py Augustus 6 Augustus|&|Emperor of Rome
+    python jurel.py Augustus 6 Augustus/+/Emperor of Rome
 
 
 ### Updates and versions

@@ -159,7 +159,6 @@ summarizer = LexRankSummarizer()
 
 summary = summarizer(parser.document, 5*(pw_slides-1)-1) #Summarize the document with 5 sentences
 
-print(sumtop)
 
 # Creates a list of lines that will be used
 usedlin = [sumtop]
@@ -172,17 +171,60 @@ for sentence in summary:
 
     usedlin.append(str(sentence))
 
-    print(sentence)
-
 # summarizes the text file using the number of slides provided by the user
 os.remove('Tempfile___.txt') # Removes the file
 gc.collect
 
 
+################################################################################
+# ACTUAL PRESENTATION
+################################################################################
+
 # Obtains a series of images
 allimg = wikipedia.page(postopic).images
 
 
+# Reduces a set of parameters in order to obtain a ratio
+# s1 (arr): Set to be checked
+# baremo (arr): original set
+# Returns a ratio (float),  1 if not needed
+
+def ratcalc(s1, baremo):
+
+    rats = [1] # All ratios
+
+    for xx, yy in zip(s1, baremo):
+
+        if xx > yy:
+            rats.append(yy/xx)
+
+
+    return min(rats)
+
+
+
+
+
+# Locates an image in a slide in the presentation
+# goose (str): URL of the image
+
+def im2pres(goose):
+
+    urllib.request.urlretrieve(goose, 'ImgPrin___.jpg')
+
+    # Obviously, the location of the image depends on its size
+    with Image.open('ImgPrin___.jpg') as test_image:
+        width, heiimg = test_image.size
+
+    # Finds the qualifier that dimishes the size if the image is too big
+    # Assumes that the slide is divided as a rectangle of 1080x810 pixels
+    ratiopic = ratcalc([width, heiimg], [1080, 810])
+    # The important parameters are as follow
+    leftdis = 1080 - ratiopic*width
+    heidis = ratiopic*heiimg
+
+    pic = slide.shapes.add_picture('ImgPrin___.jpg', Inches(leftdis*(10.4/1080)), Inches(0), height=Inches(heidis*(7.2/810)))
+    os.remove('ImgPrin___.jpg')
 
 
 
@@ -193,6 +235,14 @@ title_slide_layout = prs.slide_layouts[0]
 slide = prs.slides.add_slide(title_slide_layout)
 title = slide.shapes.title
 subtitle = slide.placeholders[1]
+title.text = pw_title
+subtitle.text = pw_sub
+
+# In the case of people, the dates of birth and death are also shown
+if topic == 'person':
+    pw_sub += '\n'+Bdat+' - '+Ddat
+
+subtitle.text = pw_sub
 
 # Image goes first, uses the starting wikipedia image
 # Needs to create a temporary image as an intermediary
@@ -213,23 +263,11 @@ while True:
     img_seen_already.append(imurl)
 
     try:
-        urllib.request.urlretrieve(imurl, 'ImgPrin___.jpg')
-        pic = slide.shapes.add_picture('ImgPrin___.jpg', Inches(5), Inches(7.5), height=Inches(6))
-        os.remove('ImgPrin___.jpg')
+        im2pres(imurl)
         # If it works, no need to check any more images
         break
     except:
         pass
-
-
-title.text = pw_title
-subtitle.text = pw_sub
-
-# In the case of people, the dates of birth and death are also shown
-if topic == 'person':
-    pw_sub += '\n'+Bdat+' - '+Ddat
-
-subtitle.text = pw_sub
 
 # Creates a slide given a set of lines and pictures
 
