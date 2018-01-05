@@ -6,10 +6,15 @@ to the user's slides number and returns it to the main program.
 """
 
 import wikipedia
+from pptx import Presentation
+from pptx.util import Inches, Pt
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
 import os, sys
+from PIL import Image
+import urllib.request
+import random
 import gc
 
 
@@ -32,17 +37,41 @@ def anyelem(ltc, el2c):
 # ACTUAL DEVELOPMENT
 ################################################################################
 
+# Needs at least the topic and the number of pages
+if len(sys.argv) < 2:
+    raise SyntaxError('Minimum number of arguments is Topic (str)')
+
 
 postopic = str(sys.argv[1]) # 'Augustus'
 
 # Creates a new for the presentation
-if len(sys.argv) <= 2:
+if len(sys.argv) == 2:
     pw_title = postopic
-else:
-    pw_title = ''
+    pw_slides = 8 # Assumes the number of slides to be 8
+    pw_sub = ''
 
-    for hh in range(2, len(sys.argv)):
-        pw_title += str(sys.argv[hh])+' '
+else:
+    pw_ori = ''
+
+    try:
+        pw_slides = int(float(sys.argv[2]))
+        numisl = 3
+    except:
+        numisl = 2
+        pw_slides = 8
+        print('Number of slides not provided, defaults to 8')
+
+    for hh in range(numisl, len(sys.argv)):
+        pw_ori += str(sys.argv[hh])+' '
+
+    # Actually creates the real titles and subtitle
+    pw_title = pw_ori.split('/+/')[0]
+
+    try:
+        pw_sub = pw_ori.split('/+/')[1]
+    except:
+        pw_sub = ''
+
 
 wiktop = wikipedia.page(postopic).content
 
@@ -128,14 +157,20 @@ thefile = "Tempfile___.txt" #name of the plain-text file
 parser = PlaintextParser.from_file(thefile, Tokenizer("english"))
 summarizer = LexRankSummarizer()
 
-summary = summarizer(parser.document, 15) #Summarize the document with 5 sentences
+summary = summarizer(parser.document, 5*(pw_slides-1)-1) #Summarize the document with 5 sentences
 
 print(sumtop)
+
+# Creates a list of lines that will be used
+usedlin = [sumtop]
+
 
 for sentence in summary:
     # Skips contents already looked over and possible titles
     if (anyelem(str(sentence), ['born', 'died in']) == True) or (len(str(sentence).split()) < 5):
         continue
+
+    usedlin.append(str(sentence))
 
     print(sentence)
 
@@ -144,5 +179,61 @@ os.remove('Tempfile___.txt') # Removes the file
 gc.collect
 
 
-# Creates a new presentation and a title slide with the name provided
-print(pw_title)
+# Obtains a series of images
+allimg = wikipedia.page(postopic).images
+
+
+
+
+
+# Title slide, always constant
+
+prs = Presentation()
+title_slide_layout = prs.slide_layouts[0]
+slide = prs.slides.add_slide(title_slide_layout)
+title = slide.shapes.title
+subtitle = slide.placeholders[1]
+
+# Image goes first, uses the starting wikipedia image
+# Needs to create a temporary image as an intermediary
+# Sometimes there are OS errors, if so, the system chooses a different image
+img_seen_already = []
+
+while True:
+
+    # No image shown if there are no available images
+    if (len(allimg) == 0) or (len(allimg) == len(img_seen_already)):
+        break
+
+    imurl = random.choice(allimg)
+
+    if imurl in img_seen_already:
+        continue
+
+    img_seen_already.append(imurl)
+
+    try:
+        urllib.request.urlretrieve(imurl, 'ImgPrin___.jpg')
+        pic = slide.shapes.add_picture('ImgPrin___.jpg', Inches(5), Inches(7.5), height=Inches(6))
+        os.remove('ImgPrin___.jpg')
+        # If it works, no need to check any more images
+        break
+    except:
+        pass
+
+
+title.text = pw_title
+subtitle.text = pw_sub
+
+# In the case of people, the dates of birth and death are also shown
+if topic == 'person':
+    pw_sub += '\n'+Bdat+' - '+Ddat
+
+subtitle.text = pw_sub
+
+# Creates a slide given a set of lines and pictures
+
+
+
+
+prs.save(postopic+'.pptx')
