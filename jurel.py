@@ -9,7 +9,7 @@ import wikipedia
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
-import os
+import os, sys
 import gc
 
 
@@ -32,9 +32,17 @@ def anyelem(ltc, el2c):
 # ACTUAL DEVELOPMENT
 ################################################################################
 
-# No actual functions being developed, experimental so far
 
-postopic = 'Augustus'
+postopic = str(sys.argv[1]) # 'Augustus'
+
+# Creates a new for the presentation
+if len(sys.argv) <= 2:
+    pw_title = postopic
+else:
+    pw_title = ''
+
+    for hh in range(2, len(sys.argv)):
+        pw_title += str(sys.argv[hh])+' '
 
 wiktop = wikipedia.page(postopic).content
 
@@ -133,3 +141,8 @@ for sentence in summary:
 
 # summarizes the text file using the number of slides provided by the user
 os.remove('Tempfile___.txt') # Removes the file
+gc.collect
+
+
+# Creates a new presentation and a title slide with the name provided
+print(pw_title)
