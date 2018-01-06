@@ -157,7 +157,7 @@ thefile = "Tempfile___.txt" #name of the plain-text file
 parser = PlaintextParser.from_file(thefile, Tokenizer("english"))
 summarizer = LexRankSummarizer()
 
-summary = summarizer(parser.document, 5*(pw_slides-1)-1) #Summarize the document with 5 sentences
+summary = summarizer(parser.document, 6*(pw_slides-1)-1) #Summarize the document with 5 sentences
 
 
 # Creates a list of lines that will be used
@@ -269,8 +269,25 @@ while True:
     except:
         pass
 
-# Creates a slide given a set of lines and pictures
 
+# CREATES THE NORMAL SLIDES
+
+actual_slide_n = pw_slides-1 # Because the title does not count
+# Each slide has 5 sentences
+slide_sentences = []
+
+for cowcow in range(0, actual_slide_n):
+    slide_sentences.append([])
+
+    for vtvt in range(0, 5):
+        slide_sentences[-1].append(usedlin[5*cowcow+vtvt])
+
+
+# Creates a slide given a set of lines and pictures
+# withsent (list) (str): Contains the sentences
+
+def one_more_slide(withsent):
+    
 
 
 

@@ -27,12 +27,16 @@ python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
   i.e. :  
     python jurel.py Augustus 6 Emperor of Rome
 
-  If no slide number is provided, the program defaults to 8 (one of which is the title).
-  If no title is provided, the title defaults to the topic
-  If the user wishes to provide a subtitle, separate it using a "/+/" without spaces.
+  If no slide number is provided, the program defaults to 8 (one of which is the title).  
+  If no title is provided, the title defaults to the topic.  
+  If the user wishes to provide a subtitle, separate it using a "/+/" without spaces.  
 
   i.e. :  
     python jurel.py Augustus 6 Augustus/+/Emperor of Rome
+
+
+  Currently, only the first slide (the title), will have and accompanying image, which may
+  be covering the text.
 
 
 ### Updates and versions
