@@ -34,8 +34,10 @@ python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
   i.e. :  
     python jurel.py Augustus 6 Augustus/+/Emperor of Rome
 
+  The program does not support any spaces in the topic, so they must be changed into "-".
 
-  Currently, only the first slide (the title), will have and accompanying image, which may
+
+  Currently, only the first slide (the title), will have an accompanying image, which may
   be covering the text.
 
 

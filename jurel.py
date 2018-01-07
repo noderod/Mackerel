@@ -44,6 +44,8 @@ if len(sys.argv) < 2:
 
 postopic = str(sys.argv[1]) # 'Augustus'
 
+postopic = postopic.replace('-', ' ')
+
 # Creates a new for the presentation
 if len(sys.argv) == 2:
     pw_title = postopic
@@ -275,19 +277,26 @@ while True:
 actual_slide_n = pw_slides-1 # Because the title does not count
 # Each slide has 5 sentences
 slide_sentences = []
+print(len(usedlin))
 
 for cowcow in range(0, actual_slide_n):
     slide_sentences.append([])
 
+    # Breaks if there are no more sentences
+    if (len(usedlin) - (5*len(slide_sentences))) < 5:
+        break
+
     for vtvt in range(0, 5):
-        slide_sentences[-1].append(usedlin[5*cowcow+vtvt])
+        slide_sentences[-1].append(usedlin[5*cowcow + vtvt])
+
 
 
 # Creates a slide given a set of lines and pictures
 # withsent (list) (str): Contains the sentences
 
 def one_more_slide(withsent):
-    
+    pass
+
 
 
 
