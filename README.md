@@ -31,6 +31,8 @@ python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
   If no slide number is provided, the program defaults to 8 (one of which is the title).  
   If no title is provided, the title defaults to the topic.  
   If the user wishes to provide a subtitle, separate it using a "/+/" without spaces.  
+  Since this program is primarily based on wikipedia, all names are not influenced at all
+  by capital letters or their absence.
 
   i.e. :  
     python jurel.py Augustus 6 Augustus/+/Emperor of Rome
@@ -45,5 +47,4 @@ python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
 ### Updates and versions
 
 **0.1** - Current - Minimum Viable Product  
-_0.1.1_ : Basic development completed for creating a pptx from a random topic. Program is especially geared towards people rather than
-events. User input is still significant, however.
+_0.1.2_ : Added titles for slides

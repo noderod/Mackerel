@@ -11,6 +11,7 @@ from pptx.util import Inches, Pt
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
+from sumy.summarizers.lsa import LsaSummarizer
 import os, sys
 from PIL import Image
 import urllib.request
@@ -292,6 +293,27 @@ for cowcow in range(0, actual_slide_n):
         slide_sentences[-1].append(usedlin[5*cowcow + vtvt])
 
 
+# Summarizes a set of lines into one, preferably for titles
+#  sena (str): Contains the sentences
+
+def slititle(sena):
+
+    # Creates a temporary text file since sumy works that way
+    with open('Titlefile___.txt', 'w') as tefil:
+        tefil.write(sena)
+
+
+    thefile = "Titlefile___.txt" #name of the plain-text file
+    parser = PlaintextParser.from_file(thefile, Tokenizer("english"))
+    summarizer = LsaSummarizer()
+
+    summary = summarizer(parser.document, 1) # Reduce the document to 1 sentence
+    os.remove('Titlefile___.txt')
+
+    return str(summary[0]).split('.')[0]
+
+
+
 
 # Creates a slide given a set of lines and pictures
 # withsent (list) (str): Contains the sentences
@@ -310,7 +332,14 @@ def one_more_slide(withsent):
     left = top = width = height = Inches(1)
     txBox = slide.shapes.add_textbox(left, top, width, height)
     TX = txBox.text_frame
-    TX.text = comptext
+    # Title
+    TX.text = slititle(comptext)
+
+    # Actual content
+    p = TX.add_paragraph()
+    p.text = comptext
+    p.font.size = Pt(12)
+
 
 for thissen in slide_sentences:
 
