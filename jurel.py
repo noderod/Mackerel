@@ -179,6 +179,36 @@ os.remove('Tempfile___.txt') # Removes the file
 gc.collect
 
 
+# Orders the sentences in a single string according to a biographical order.
+# allsen (arr) (str): Conglomerate of all sentences
+# Returns a list of the sentences, NOT a single str
+
+def order_sen(allsen):
+
+    fwq = []
+    for mem in allsen:
+        try:
+            datdat = min([int(s) for s in mem.split() if s.isdigit()])
+
+        except:
+            # For sentences without numbers in them
+            datdat = np.inf
+
+        if 'BC' in mem:
+            datdat = -datdat
+
+        fwq.append([mem, datdat])
+
+    wer =  sorted(fwq, key = lambda x: x[1])
+    nam = []
+
+    for kol in wer:
+        nam.append(kol[0])
+
+    return nam
+
+
+usedlin = order_sen(usedlin)
 ################################################################################
 # ACTUAL PRESENTATION
 ################################################################################
@@ -286,35 +316,6 @@ for cowcow in range(0, actual_slide_n):
 
     for vtvt in range(0, 8):
         slide_sentences[-1].append(usedlin[8*cowcow + vtvt])
-
-
-# Orders the sentences in a single string according to a biographical order.
-# allsen (str): Conglomerate of all sentences
-# Returns a list of the sentences, NOT a single str
-
-def order_sen(allsen):
-
-    fwq = []
-    for mem in allsen:
-        try:
-            datdat = min([int(s) for s in mem.split() if s.isdigit()])
-
-        except:
-            # For sentences without numbers in them
-            datdat = np.inf
-
-        if 'BC' in mem:
-            datdat = -datdat
-
-        fwq.append([mem, datdat])
-
-    wer =  sorted(fwq, key = lambda x: x[1])
-    nam = []
-
-    for kol in wer:
-        nam.append(kol[0])
-
-    return nam
 
 
 # Summarizes a set of lines into one, preferably for titles
