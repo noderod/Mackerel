@@ -83,12 +83,12 @@ sumtop = wikipedia.summary(postopic, sentences = 1)
 # List of words which indicates a certain topic
 
 artictop = {
-    'person' : ['activist', 'actor', 'artist', 'bussinessman', 'CEO', 'designer',
+    'person' : ['activist', 'actor', 'artist', 'author', 'bussinessman', 'CEO', 'designer',
                 'doctor', 'emperor', 'entrepeneur', 'inventor', 'king', 'photographer',
-                'politician', 'polymath', 'president', 'producer', 'prophet'],
+                'politician', 'polymath', 'president', 'producer', 'prophet', 'writer'],
     'place' : ['capital', 'city', 'country', 'municipality', 'prefecture', 'state',
               'town', 'village'],
-    'art' : ['statue', 'painting', 'film', 'movie'],
+    'art' : ['architect', 'film', 'movie', 'painting', 'statue'],
     'common object' : [],
     'lifeform' : ['animal', 'bacteria', 'organism', 'plant', 'protozoo', 'species'],
     'religion' : ['relig', 'theism'],
@@ -109,6 +109,8 @@ for postt in artictop.keys():
 
     if notfound == False:
         break
+else:
+    topic = 'Unknown'
 
 
 print(topic)
@@ -295,9 +297,26 @@ for cowcow in range(0, actual_slide_n):
 # withsent (list) (str): Contains the sentences
 
 def one_more_slide(withsent):
-    pass
 
+    comptext = ''
+    for tyu in range(0, len(withsent)-1):
+        comptext += withsent[tyu] + '\n'
 
+    else:
+        comptext += withsent[-1]
+
+    blank_slide_layout = prs.slide_layouts[6]
+    slide = prs.slides.add_slide(blank_slide_layout)
+    left = top = width = height = Inches(1)
+    txBox = slide.shapes.add_textbox(left, top, width, height)
+    TX = txBox.text_frame
+    TX.text = comptext
+
+for thissen in slide_sentences:
+
+    if len(thissen) == 0:
+        continue
+    one_more_slide(thissen)
 
 
 prs.save(postopic+'.pptx')

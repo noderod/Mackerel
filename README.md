@@ -21,6 +21,7 @@ the first time. Fortunately, the error message is enough as a guide.
 
 
 ### Usage
+
 **Jurel**: A command line tool to create a presentation provided a topic. The correct order of arguments would be:  
 python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
 
@@ -42,4 +43,7 @@ python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
 
 
 ### Updates and versions
-**0.0** - Current - Incomplete.
+
+**0.1** - Current - Minimum Viable Product  
+_0.1.1_ : Basic development completed for creating a pptx from a random topic. Program is especially geared towards people rather than
+events. User input is still significant, however.
