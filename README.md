@@ -47,4 +47,4 @@ python jurel.py {TOPIC} {SLIDE_NUMBER} {COMPLETE_TITLE}
 ### Updates and versions
 
 **0.1** - Current - Minimum Viable Product  
-_0.1.2_ : Added titles for slides
+_0.1.3_ : Changed the way sentences are ordered, to maintain chronological order.

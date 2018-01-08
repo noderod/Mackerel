@@ -15,6 +15,7 @@ from sumy.summarizers.lsa import LsaSummarizer
 import os, sys
 from PIL import Image
 import urllib.request
+import numpy as np
 import random
 import gc
 
@@ -162,19 +163,16 @@ thefile = "Tempfile___.txt" #name of the plain-text file
 parser = PlaintextParser.from_file(thefile, Tokenizer("english"))
 summarizer = LexRankSummarizer()
 
-summary = summarizer(parser.document, 6*(pw_slides-1)-1) #Summarize the document with 5 sentences
+summary = summarizer(parser.document, 9*(pw_slides-1)-1) #Summarize the document with 5 sentences
 
 
 # Creates a list of lines that will be used
-usedlin = [sumtop]
-
+usedlin = []
 
 for sentence in summary:
-    # Skips contents already looked over and possible titles
-    if (anyelem(str(sentence), ['born', 'died in']) == True) or (len(str(sentence).split()) < 5):
-        continue
 
     usedlin.append(str(sentence))
+
 
 # summarizes the text file using the number of slides provided by the user
 os.remove('Tempfile___.txt') # Removes the file
@@ -205,9 +203,6 @@ def ratcalc(s1, baremo):
 
 
     return min(rats)
-
-
-
 
 
 # Locates an image in a slide in the presentation
@@ -286,11 +281,40 @@ for cowcow in range(0, actual_slide_n):
     slide_sentences.append([])
 
     # Breaks if there are no more sentences
-    if (len(usedlin) - (5*len(slide_sentences))) < 5:
+    if (len(usedlin) - (8*len(slide_sentences))) < 8:
         break
 
-    for vtvt in range(0, 5):
-        slide_sentences[-1].append(usedlin[5*cowcow + vtvt])
+    for vtvt in range(0, 8):
+        slide_sentences[-1].append(usedlin[8*cowcow + vtvt])
+
+
+# Orders the sentences in a single string according to a biographical order.
+# allsen (str): Conglomerate of all sentences
+# Returns a list of the sentences, NOT a single str
+
+def order_sen(allsen):
+
+    fwq = []
+    for mem in allsen:
+        try:
+            datdat = min([int(s) for s in mem.split() if s.isdigit()])
+
+        except:
+            # For sentences without numbers in them
+            datdat = np.inf
+
+        if 'BC' in mem:
+            datdat = -datdat
+
+        fwq.append([mem, datdat])
+
+    wer =  sorted(fwq, key = lambda x: x[1])
+    nam = []
+
+    for kol in wer:
+        nam.append(kol[0])
+
+    return nam
 
 
 # Summarizes a set of lines into one, preferably for titles
@@ -311,8 +335,6 @@ def slititle(sena):
     os.remove('Titlefile___.txt')
 
     return str(summary[0]).split('.')[0]
-
-
 
 
 # Creates a slide given a set of lines and pictures
@@ -345,7 +367,8 @@ for thissen in slide_sentences:
 
     if len(thissen) == 0:
         continue
-    one_more_slide(thissen)
+
+    one_more_slide(order_sen(thissen))
 
 
 prs.save(postopic+'.pptx')
